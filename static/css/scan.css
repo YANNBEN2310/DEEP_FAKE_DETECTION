@@ -1,0 +1,186 @@
+.container {
+    text-align: center;
+    flex: 1; /* Allow container to grow and fill space between header and footer */
+}
+
+.container button, .container label {
+    border: none;
+    color: white;
+    padding: 30px 64px; /* Padding adjusted to the previous style */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px; /* Font size adjusted to the previous style */
+    margin: 8px 4px; /* Margin adjusted to the previous style */
+    cursor: pointer;
+    border-radius: 25px;
+    font-family: Impact, sans-serif;
+    transition: transform 0.2s; /* Smooth transition for hover effect */
+    color: #000;
+}
+
+.container button:hover, .container label:hover {
+    transform: scale(1.05); /* Slightly increase size on hover */
+}
+
+.button-load-media {
+    background-color: #71faff; /* Light blue */
+    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+.button-load-model {
+    background-color: #ff8b7f; /* Light orange (color of button 2) */
+    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+.button-scan-now {
+    background-color: #f28482; /* Red-orange (color of button 3) */
+    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+.step {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px; /* Margin adjusted to the previous style */
+    position: relative; /* Ensure the step is the positioning context for the icon */
+}
+
+.click-icon {
+    position: absolute;
+    bottom: -20px;
+    right: 0;
+    font-size: 48px; /* Double the icon size */
+    cursor: pointer;
+}
+
+.large-button {
+    width: 300px; /* Adjusted to the previous style */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+.full-width-button {
+    width: calc(250px * 2 + 120px); /* Same width as LOAD IMAGE and LOAD VIDEO combined with margin */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+/* Colors */
+:root {
+    --primary: #d43a2f;
+    --secondary: #000000;
+}
+
+/* Layout */
+header, footer {
+    background: var(--primary);
+    color: #FAEBDC;
+    text-align: center;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: all .5s ease-in-out; /* Ensure smooth transition */
+    border-radius: 30px;
+    font-family: impact;
+    letter-spacing: 6px; /* Adjust this value to increase or decrease the spacing between letters */
+    width: 100%;
+    position: fixed; /* Fixed positioning */
+    z-index: 10; /* Ensure they are on top of other elements */
+}
+
+header {
+    top: 0; /* Position header at the top */
+}
+
+footer {
+    bottom: 0; /* Position footer at the bottom */
+}
+
+/* Hover effects for header and footer */
+header:hover, footer:hover {
+    background-image: linear-gradient(90deg, var(--secondary), var(--primary));
+}
+
+header:hover h1 {
+    transform: translateX(-500px); /* Increased movement for demonstration */
+}
+
+footer:hover p {
+    transform: translateX(600px); /* Increased movement for demonstration */
+}
+
+header h1, footer p {
+    display: inline-block;
+    transition: transform .4s ease-in-out;
+}
+
+/* Navigation items in header */
+header nav {
+    display: flex;
+    opacity: 0;
+    transform: translateX(100px);
+    transition: opacity .4s ease-in-out, transform .4s ease-in-out;
+    margin-left: 20px;
+    border-radius: 30px;
+    justify-content: center !important;
+}
+
+header:hover nav {
+    opacity: 1;
+    transform: translateX(0); /* Bring into view */
+}
+
+.nav-item {
+    color: #fff;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* Shake Animation Keyframes */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+    20%, 40%, 60%, 80% { transform: translateX(10px); }
+}
+
+/* Apply Shake Animation on Hover */
+.nav-item:hover {
+    animation: shake 0.8s ease-in-out;
+}
+
+main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* Hero Section */
+.hero {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.hero-content {
+    margin-bottom: 60px;
+}
+
+/* Global box-sizing */
+* {
+    box-sizing: border-box;
+}
+
+.button-load-media, .button-load-model {
+    background-color: #71faff; /* blue */
+    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
+    height: 100px; /* Adjusted to the previous style */
+}
+
+.button-load-model {
+    background-color: #ffc7a4; /* Beige */
+}
+

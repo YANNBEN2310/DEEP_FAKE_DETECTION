@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reality Scan</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/scan.css') }}">
+  <style>
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: url('{{ url_for('static', filename='images/2.png') }}') no-repeat center center fixed;
+      background-size: cover;
+      margin: 0;
+      font-family: Arial, sans-serif;
+    }
+    .message {
+      font-size: 18px;
+      color: #333;
+      margin-top: 10px;
+    }
+    .progress-container {
+      width: 100%;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .progress-bar {
+      width: 100%;
+      background-color: #f3f3f3;
+      border-radius: 5px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-bar-inner {
+      height: 24px;
+      width: 0%;
+      background-color: #4caf50;
+      text-align: center;
+      line-height: 24px;
+      color: white;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <header class="ribbon-hover">
+    <h1>REALITY RADAR</h1>
+    <nav>
+        <a href="#about" class="nav-item">About</a>
+        <a href="#contacts" class="nav-item">Contacts</a>
+        <a href="#learn" class="nav-item">Learn</a>
+        <a href="#support" class="nav-item">Support</a>
+    </nav>
+  </header>
+  <main>
+    <div class="container">
+        <div class="step">
+            <form id="upload-form" action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" id="load-media" accept="image/*,video/*" class="large-button" style="display: none;" onchange="handleFileSelect(this)">
+                <label for="load-media" class="button-load-media large-button">LOAD MEDIA</label>
+                <input type="hidden" name="file_type" id="file-type">
+            </form>
+        </div>
+        <div id="file-message" class="message"></div>
+        <div class="step">
+            <form id="model-form" action="{{ url_for('upload_model') }}" method="POST" enctype="multipart/form-data">
+                <input type="file" name="model" id="load-model" class="large-button" style="display: none;" onchange="this.form.submit();">
+                <label for="load-model" class="button-load-model large-button full-width-button">LOAD MODEL</label>
+            </form>
+        </div>
+        <div class="step">
+            <form id="scan-form" action="{{ url_for('scan_now') }}" method="POST">
+                <button type="submit" class="button-scan-now large-button full-width-button" onclick="startProgressBar()">SCAN NOW</button>
+            </form>
+        </div>
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div id="progress-bar-inner" class="progress-bar-inner">0%</div>
+            </div>
+        </div>
+        <div class="click-icon">&#128073;</div>
+    </div>
+  </main>
+  <footer class="ribbon-hover">
+    <p>&copy; Reality Radar 2024</p>
+  </footer>
+  <script src="{{ url_for('static', filename='js/file_handler.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Reality Radar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+  <div class="slideshow">
+    <div class="slide fade" style="background-image: url('{{ url_for('static', filename='images/1.png') }}');"></div>
+  </div>
+  <header class="ribbon-hover">
+    <h1>REALITY RADAR</h1>
+    <nav>
+        <a href="#about" class="nav-item">About</a>
+        <a href="#contacts" class="nav-item">Contacts</a>
+        <a href="#learn" class="nav-item">Learn</a>
+        <a href="#support" class="nav-item">Support</a>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <div class="hero-content">
+        <div class="buttons">
+          <button class="btn-hover login" id="loginBtn">SCAN NOW</button>
+        </div>
+      </div>
+    </section>
+    <section class="features">
+      <!-- Feature boxes -->
+    </section>
+  </main>
+  <footer class="ribbon-hover">
+    <p>&copy; Reality Radar 2024</p>
+  </footer>
+  <script>
+    document.getElementById("loginBtn").addEventListener("click", function() {
+        window.location.href = "{{ url_for('scan') }}";
+    });
+  </script>
+</body>
+</html>

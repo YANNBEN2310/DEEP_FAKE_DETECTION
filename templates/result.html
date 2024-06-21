@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
+    <title>Scan Result</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Scan Result</h1>
+        <p>Filename: {{ filename }}</p>
+        <p>Label: <span class="{{ 'fake' if label == 'Fake' else 'real' }}">{{ label }}</span></p>
+        <p>Confidence: {{ confidence }}</p>
+        {% if file_type == 'image' %}
+        <p>Scanned Image:</p>
+        <img src="{{ url_for('static', filename='uploaded_files/' ~ filename) }}" alt="Scanned Image" class="scanned-media">
+        {% elif file_type == 'video' %}
+        <p>Scanned Video:</p>
+        <video controls class="scanned-media">
+            <source src="{{ url_for('static', filename='uploaded_files/' ~ filename) }}" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        {% endif %}
+        <div>
+            <a href="{{ url_for('scan') }}" class="btn scan-another">Scan Another File</a>
+            <a href="{{ url_for('index') }}" class="btn back-home">Back to Home</a>
+        </div>
+    </div>
+</body>
+</html>
