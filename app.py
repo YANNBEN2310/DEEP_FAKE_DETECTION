@@ -3,10 +3,10 @@ import numpy as np
 from flask import Flask, request, render_template, redirect, url_for, flash, session
 import cv2
 from PIL import Image
+from keras.models import load_model
+from keras.preprocessing import image as keras_image
+from torchvision import transforms
 import torch
-from torch import nn
-from torchvision import models, transforms
-from torch.utils.data import Dataset, DataLoader
 from facenet_pytorch import MTCNN
 
 app = Flask(__name__)
@@ -15,153 +15,97 @@ app.config['UPLOAD_FOLDER'] = 'static/uploaded_files'
 app.config['MODEL_FOLDER'] = 'models'
 
 # Load the default model
-video_model_path = os.path.join(app.config['MODEL_FOLDER'], 'model_97_acc_100_frames_FF_data.pt')
-image_model_path = os.path.join(app.config['MODEL_FOLDER'], 'model_97_acc_100_frames_FF_data.pt')
-video_model = None
-image_model = None
+model_path = os.path.join(app.config['MODEL_FOLDER'], 'IMAGE_DEEP_FAKE_MODEL-23.h5')
+
+try:
+    image_model = load_model(model_path)
+    print(f"Model loaded successfully from {model_path}")
+except Exception as e:
+    print(f"Error loading model: {e}")
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+mtcnn = MTCNN(keep_all=True, device=device)
 
-class Model(nn.Module):
-    def __init__(self, num_classes, latent_dim=2048, lstm_layers=1, hidden_dim=2048, bidirectional=False):
-        super(Model, self).__init__()
-        model = models.resnext50_32x4d(weights=models.ResNeXt50_32X4D_Weights.DEFAULT)
-        self.model = nn.Sequential(*list(model.children())[:-2])
-        self.lstm = nn.LSTM(latent_dim, hidden_dim, lstm_layers, bidirectional)
-        self.relu = nn.LeakyReLU()
-        self.dp = nn.Dropout(0.4)
-        self.linear1 = nn.Linear(2048, num_classes)
-        self.avgpool = nn.AdaptiveAvgPool2d(1)
-
-    def forward(self, x):
-        seq_length, c, h, w = x.shape  # Update this line to match the dataset output
-        x = x.view(seq_length, c, h, w)
-        fmap = self.model(x)
-        x = self.avgpool(fmap)
-        x = x.view(1, seq_length, 2048)  # Update this line to add batch dimension
-        x_lstm, _ = self.lstm(x, None)
-        return fmap, self.dp(self.linear1(x_lstm[:, -1, :]))
-
-video_model = Model(num_classes=2).to(device)
-
-def load_models():
-    global video_model, image_model
-    if os.path.exists(video_model_path):
-        try:
-            print(f"Loading video model from {video_model_path}")
-            video_model.load_state_dict(torch.load(video_model_path, map_location=device))
-            video_model.eval()
-            print(f"Video model loaded from {video_model_path}")
-        except Exception as e:
-            print(f"Error loading video model: {e}")
-            video_model = None
-    else:
-        print(f"Error: The video model file does not exist at {video_model_path}")
-        video_model = None
-
-    if os.path.exists(image_model_path):
-        try:
-            print(f"Loading image model from {image_model_path}")
-            image_model = torch.load(image_model_path, map_location=device)
-            image_model.eval()
-            print(f"Image model loaded from {image_model_path}")
-        except Exception as e:
-            print(f"Error loading image model: {e}")
-            image_model = None
-    else:
-        print(f"Error: The image model file does not exist at {image_model_path}")
-        image_model = None
-
-load_models()
-
-# Ensure upload folder exists
-if not os.path.exists(app.config['UPLOAD_FOLDER']):
-    os.makedirs(app.config['UPLOAD_FOLDER'])
-
-class VideoDataset(Dataset):
-    def __init__(self, video_path, transform, sequence_length=60):
-        self.video_path = video_path
-        self.transform = transform
-        self.sequence_length = sequence_length
-        self.frames = self.extract_frames()
-        self.detector = MTCNN()
-
-    def extract_frames(self):
-        frames = []
-        cap = cv2.VideoCapture(self.video_path)
-        while True:
-            ret, frame = cap.read()
-            if not ret:
-                break
-            frames.append(frame)
-        cap.release()
-        return frames
-
-    def __len__(self):
-        return 1
-
-    def __getitem__(self, idx):
-        frames = []
-        for i, frame in enumerate(self.frames):
-            if i % (len(self.frames) // self.sequence_length) == 0:
-                boxes, _ = self.detector.detect(frame)
-                if boxes is not None and len(boxes) > 0:
-                    x1, y1, x2, y2 = [int(coord) for coord in boxes[0]]
-                    frame = frame[y1:y2, x1:x2]
-                frames.append(self.transform(frame))
-            if len(frames) == self.sequence_length:
-                break
-        frames = torch.stack(frames)
-        return frames  # Return shape (sequence_length, c, h, w)
-
-im_size = 112
-mean = [0.485, 0.456, 0.406]
-std = [0.229, 0.224, 0.225]
-
+# Transformation steps
 transform = transforms.Compose([
-    transforms.ToPILImage(),
-    transforms.Resize((im_size, im_size)),
+    transforms.Resize((224, 224)),
     transforms.ToTensor(),
-    transforms.Normalize(mean, std)
+    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
 ])
 
-def predict_video(video_path):
-    print(f"Predicting video: {video_path}")
-    dataset = VideoDataset(video_path, transform)
-    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
-    confidences = []
-    predictions = []
-    with torch.no_grad():
-        for batch in dataloader:
-            batch = batch.to(device)
-            _, logits = video_model(batch)
-            probs = nn.functional.softmax(logits, dim=1)
-            conf, pred = torch.max(probs, 1)
-            predictions.append(pred.item())
-            confidences.append(conf.item())
-            print(f"Batch prediction: {pred.item()}, confidence: {conf.item()}")
-    avg_confidence = np.mean(confidences)
-    avg_prediction = np.argmax(np.bincount(predictions))
-    label = 'Fake' if avg_prediction == 1 else 'Real'
-    print(f"Video prediction: {label}, average confidence: {avg_confidence}")
-    return label, avg_confidence
+def extract_face(img):
+    boxes, _ = mtcnn.detect(img)
+    if boxes is not None:
+        x, y, w, h = boxes[0].astype(int)
+        face_img = img[y:h, x:w]
+        return face_img, True
+    return img, False  # If no face is detected, return the original image and False
+
+def preprocess_frame(frame):
+    face, detected = extract_face(frame)
+    return keras_image.img_to_array(face), detected
 
 def predict_image(file_path):
-    global image_model
     try:
         print(f"Predicting image: {file_path}")
-        if image_model is None:
-            print("Error: Image model is not loaded.")
-            return "Error", 0.0
-        img = Image.open(file_path).convert('RGB')
-        img = transform(img).unsqueeze(0).to(device)
-        y_pred = image_model(img)
-        confidence_score = y_pred[0][1].item()
+        img = keras_image.load_img(file_path)
+        img = np.array(img)
+        face_img, detected = extract_face(img)
+        if not detected:
+            return "No Face Detected", 0.0
+        face_img = Image.fromarray(face_img)
+        face_img = face_img.resize((224, 224))
+        x = keras_image.img_to_array(face_img)
+        x = np.expand_dims(x, axis=0)
+        x /= 255.0
+        y_pred = image_model.predict(x)
+        confidence_score = y_pred[0][0]
         label = "Fake" if confidence_score >= 0.50 else "Real"
         print(f"Image prediction: {label} with confidence {confidence_score}")
         return label, confidence_score
     except Exception as e:
         print(f"Error in predict_image: {e}")
+        raise
+
+def extract_frames(video_path):
+    frames = []
+    cap = cv2.VideoCapture(video_path)
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frames.append(frame)
+    cap.release()
+    return frames
+
+def predict_video(file_path):
+    try:
+        print(f"Predicting video: {file_path}")
+        frames = extract_frames(file_path)
+        predictions = []
+        confidences = []
+        face_detected = False
+        for frame in frames:
+            face_img, detected = extract_face(frame)
+            if detected:
+                face_detected = True
+                face_img = Image.fromarray(face_img)
+                face_img = face_img.resize((224, 224))
+                x = keras_image.img_to_array(face_img)
+                x = np.expand_dims(x, axis=0)
+                x /= 255.0
+                y_pred = image_model.predict(x)
+                confidence_score = y_pred[0][0]
+                label = "Fake" if confidence_score >= 0.50 else "Real"
+                predictions.append(label)
+                confidences.append(confidence_score)
+        if not face_detected:
+            return "No Face Detected", 0.0
+        avg_confidence = np.mean(confidences)
+        avg_prediction = max(set(predictions), key=predictions.count)
+        return avg_prediction, avg_confidence
+    except Exception as e:
+        print(f"Error in predict_video: {e}")
         raise
 
 def clear_uploaded_files():

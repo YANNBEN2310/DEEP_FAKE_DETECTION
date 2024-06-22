@@ -1,0 +1,11 @@
+venv/
+__pycache__/
+*.pyc
+node_modules/
+models/
+.idea/
+real_and_fake_face/
+real_and_fake_face_detection/
+real_and_fake_face_detection/
+deepfake_detection_model.h5
+balanced_dataset/
