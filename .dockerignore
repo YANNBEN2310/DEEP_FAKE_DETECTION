@@ -11,4 +11,5 @@ balanced_dataset/
 yann_env/
 models_old/
 images/
-models/
+# models/
+notebooks/
