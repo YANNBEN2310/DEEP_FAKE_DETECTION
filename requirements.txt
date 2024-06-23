@@ -32,7 +32,7 @@ opencv-python
 opt-einsum
 optree==0.11.0
 packaging==24.1
-Pillow==8.3.2
+Pillow
 protobuf==4.25.3
 Pygments==2.18.0
 requests==2.32.3
