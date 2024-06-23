@@ -7,23 +7,18 @@ from keras.models import load_model
 from keras.preprocessing import image as keras_image
 import torch
 from facenet_pytorch import MTCNN
+import gc
 
 app = Flask(__name__)
 app.secret_key = "supersecretkey"
 app.config['UPLOAD_FOLDER'] = 'static/uploaded_files'
 app.config['MODEL_FOLDER'] = 'models'
 
-# Load the default model
-model_path = os.path.join(app.config['MODEL_FOLDER'], 'IMAGE_DEEP_FAKE_MODEL-2.h5')
 optimal_threshold = 0.46  # Define optimal threshold for predictions
 glitch_threshold = 0.5  # Threshold for detecting glitches
 glitch_count_threshold = 10  # Number of frames with glitches to consider video as fake
 
-try:
-    image_model = load_model(model_path)
-    print(f"Model loaded successfully from {model_path}")
-except Exception as e:
-    print(f"Error loading model: {e}")
+image_model = None
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 mtcnn = MTCNN(keep_all=True, device=device)
@@ -41,6 +36,7 @@ def preprocess_frame(frame):
     return keras_image.img_to_array(face), detected
 
 def predict_image(file_path):
+    global image_model
     try:
         print(f"Predicting image: {file_path}")
         img = keras_image.load_img(file_path)
@@ -61,6 +57,12 @@ def predict_image(file_path):
     except Exception as e:
         print(f"Error in predict_image: {e}")
         raise
+    finally:
+        # Clear memory
+        del img
+        del face_img
+        del x
+        gc.collect()
 
 def extract_frames(video_path):
     frames = []
@@ -217,7 +219,7 @@ def upload_model():
                 flash('No selected model file')
                 return redirect(url_for('scan'))
             if model_file:
-                model_path = os.path.join(app.config['UPLOAD_FOLDER'], model_file.filename)
+                model_path = os.path.join(app.config['MODEL_FOLDER'], model_file.filename)
                 model_file.save(model_path)
                 global image_model
                 image_model = load_model(model_path)  # Reload the model
@@ -230,4 +232,5 @@ def upload_model():
         return redirect(url_for('scan'))
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=port)

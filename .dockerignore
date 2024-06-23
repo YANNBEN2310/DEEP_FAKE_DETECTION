@@ -2,7 +2,6 @@ venv/
 __pycache__/
 *.pyc
 node_modules/
-models/
 .idea/
 real_and_fake_face/
 real_and_fake_face_detection/
@@ -12,3 +11,4 @@ balanced_dataset/
 yann_env/
 models_old/
 images/
+models/
