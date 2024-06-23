@@ -54,10 +54,22 @@ a.btn:hover {
     font-weight: bold;
 }
 
+.unknown {
+    color: orange;
+    font-weight: bold;
+}
+
 .scanned-media {
     max-width: 100%;
     max-height: 400px;
     border-radius: 10px;
+}
+
+.label-icon {
+    width: 40px; /* Increased width */
+    height: 40px; /* Increased height */
+    margin-left: 10px;
+    vertical-align: middle;
 }
 
 a.btn.scan-another {

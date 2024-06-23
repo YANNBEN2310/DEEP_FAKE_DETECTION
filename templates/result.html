@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{{ url_for('static', filename='images/app.ico') }}" type="image/x-icon">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/result.css') }}">
-    <title>Scan Result</title>
+    <title>Reality Radar</title>
 </head>
 <body>
     <div class="container">
         <h1>Scan Result</h1>
         <p>Filename: {{ filename }}</p>
-        <p>Label: <span class="{{ 'fake' if label == 'Fake' else 'real' }}">{{ label }}</span></p>
+        <p>Label: 
+            <span class="{{ 'fake' if label == 'Fake' else 'real' if label == 'Real' else 'unknown' }}">
+                {{ label }}
+            </span>
+            <img src="{{ url_for('static', filename='images/no.ico') if label == 'Fake' else url_for('static', filename='images/yes.ico') if label == 'Real' else url_for('static', filename='images/yesno.ico') }}" alt="Label Icon" class="label-icon">
+        </p>
         <p>Confidence: {{ confidence }}</p>
         {% if file_type == 'image' %}
         <p>Scanned Image:</p>

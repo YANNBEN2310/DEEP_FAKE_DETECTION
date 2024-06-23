@@ -9,3 +9,4 @@ real_and_fake_face_detection/
 real_and_fake_face_detection/
 deepfake_detection_model.h5
 balanced_dataset/
+yann_env/

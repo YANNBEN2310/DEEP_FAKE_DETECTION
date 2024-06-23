@@ -3,6 +3,7 @@
 <head>
   <title>Reality Scan</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{{ url_for('static', filename='images/app.ico') }}" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/scan.css') }}">
   <style>
@@ -48,39 +49,43 @@
   <header class="ribbon-hover">
     <h1>REALITY RADAR</h1>
     <nav>
-        <a href="#about" class="nav-item">About</a>
-        <a href="#contacts" class="nav-item">Contacts</a>
-        <a href="#learn" class="nav-item">Learn</a>
-        <a href="#support" class="nav-item">Support</a>
+      <a href="#about" class="nav-item">About</a>
+      <a href="#contacts" class="nav-item">Contacts</a>
+      <a href="#learn" class="nav-item">Learn</a>
+      <a href="#support" class="nav-item">Support</a>
     </nav>
   </header>
   <main>
     <div class="container">
-        <div class="step">
-            <form id="upload-form" action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
-                <input type="file" name="file" id="load-media" accept="image/*,video/*" class="large-button" style="display: none;" onchange="handleFileSelect(this)">
-                <label for="load-media" class="button-load-media large-button">LOAD MEDIA</label>
-                <input type="hidden" name="file_type" id="file-type">
-            </form>
+      <div class="step">
+        <form id="upload-form" action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
+          <input type="file" name="file" id="load-media" accept="image/*,video/*" class="large-button" style="display: none;">
+          <label for="load-media" class="button-load-media large-button">LOAD MEDIA</label>
+          <input type="hidden" name="file_type" id="file-type">
+        </form>
+      </div>
+      <div id="file-message" class="message"></div>
+      <div class="step">
+        <form id="model-form" action="{{ url_for('upload_model') }}" method="POST" enctype="multipart/form-data">
+          <input type="file" name="model" id="load-model" class="large-button" style="display: none;" onchange="this.form.submit();">
+          <label for="load-model" class="button-load-model large-button full-width-button">LOAD MODEL</label>
+        </form>
+      </div>
+      <div class="step">
+        <form id="scan-form" action="{{ url_for('scan_now') }}" method="POST">
+          <button type="submit" class="button-scan-now large-button full-width-button" onclick="startProgressBar()">SCAN NOW</button>
+          <div class="input-container">
+            <label for="frames_to_analyze">Frames to analyze:</label>
+            <input type="number" id="frames_to_analyze" name="frames_to_analyze" min="1" max="300" value="100">
+          </div>
+        </form>
+      </div>
+      <div class="progress-container">
+        <div class="progress-bar">
+          <div id="progress-bar-inner" class="progress-bar-inner">0%</div>
         </div>
-        <div id="file-message" class="message"></div>
-        <div class="step">
-            <form id="model-form" action="{{ url_for('upload_model') }}" method="POST" enctype="multipart/form-data">
-                <input type="file" name="model" id="load-model" class="large-button" style="display: none;" onchange="this.form.submit();">
-                <label for="load-model" class="button-load-model large-button full-width-button">LOAD MODEL</label>
-            </form>
-        </div>
-        <div class="step">
-            <form id="scan-form" action="{{ url_for('scan_now') }}" method="POST">
-                <button type="submit" class="button-scan-now large-button full-width-button" onclick="startProgressBar()">SCAN NOW</button>
-            </form>
-        </div>
-        <div class="progress-container">
-            <div class="progress-bar">
-                <div id="progress-bar-inner" class="progress-bar-inner">0%</div>
-            </div>
-        </div>
-        <div class="click-icon">&#128073;</div>
+      </div>
+      <div class="click-icon">&#128073;</div>
     </div>
   </main>
   <footer class="ribbon-hover">

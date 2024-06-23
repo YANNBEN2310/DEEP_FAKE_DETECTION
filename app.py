@@ -5,7 +5,6 @@ import cv2
 from PIL import Image
 from keras.models import load_model
 from keras.preprocessing import image as keras_image
-from torchvision import transforms
 import torch
 from facenet_pytorch import MTCNN
 
@@ -15,7 +14,10 @@ app.config['UPLOAD_FOLDER'] = 'static/uploaded_files'
 app.config['MODEL_FOLDER'] = 'models'
 
 # Load the default model
-model_path = os.path.join(app.config['MODEL_FOLDER'], 'IMAGE_DEEP_FAKE_MODEL-23.h5')
+model_path = os.path.join(app.config['MODEL_FOLDER'], 'IMAGE_DEEP_FAKE_MODEL-2.h5')
+optimal_threshold = 0.46  # Define optimal threshold for predictions
+glitch_threshold = 0.5  # Threshold for detecting glitches
+glitch_count_threshold = 10  # Number of frames with glitches to consider video as fake
 
 try:
     image_model = load_model(model_path)
@@ -25,13 +27,6 @@ except Exception as e:
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 mtcnn = MTCNN(keep_all=True, device=device)
-
-# Transformation steps
-transform = transforms.Compose([
-    transforms.Resize((224, 224)),
-    transforms.ToTensor(),
-    transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
-])
 
 def extract_face(img):
     boxes, _ = mtcnn.detect(img)
@@ -60,7 +55,7 @@ def predict_image(file_path):
         x /= 255.0
         y_pred = image_model.predict(x)
         confidence_score = y_pred[0][0]
-        label = "Fake" if confidence_score >= 0.50 else "Real"
+        label = "Fake" if confidence_score >= optimal_threshold else "Real"
         print(f"Image prediction: {label} with confidence {confidence_score}")
         return label, confidence_score
     except Exception as e:
@@ -78,35 +73,49 @@ def extract_frames(video_path):
     cap.release()
     return frames
 
-def predict_video(file_path):
-    try:
-        print(f"Predicting video: {file_path}")
-        frames = extract_frames(file_path)
-        predictions = []
-        confidences = []
-        face_detected = False
-        for frame in frames:
-            face_img, detected = extract_face(frame)
-            if detected:
-                face_detected = True
-                face_img = Image.fromarray(face_img)
-                face_img = face_img.resize((224, 224))
-                x = keras_image.img_to_array(face_img)
-                x = np.expand_dims(x, axis=0)
-                x /= 255.0
-                y_pred = image_model.predict(x)
-                confidence_score = y_pred[0][0]
-                label = "Fake" if confidence_score >= 0.50 else "Real"
-                predictions.append(label)
-                confidences.append(confidence_score)
-        if not face_detected:
-            return "No Face Detected", 0.0
-        avg_confidence = np.mean(confidences)
-        avg_prediction = max(set(predictions), key=predictions.count)
-        return avg_prediction, avg_confidence
-    except Exception as e:
-        print(f"Error in predict_video: {e}")
-        raise
+def detect_glitch(frame1, frame2, threshold):
+    diff = cv2.absdiff(frame1, frame2)
+    non_zero_count = np.count_nonzero(diff)
+    total_count = diff.size
+    return (non_zero_count / total_count) > threshold
+
+def predict_video(file_path, model, threshold, glitch_threshold, glitch_count_threshold, frames_to_analyze):
+    frames = extract_frames(file_path)
+    frames = frames[:frames_to_analyze]  # Limit to the number of frames to analyze
+    predictions = []
+    confidences = []
+    glitch_count = 0
+    face_detected = False
+
+    for i in range(1, len(frames)):
+        frame1 = frames[i - 1]
+        frame2 = frames[i]
+        face_img, detected = extract_face(frame2)
+        if detected:
+            face_detected = True
+            face_img = Image.fromarray(face_img)
+            face_img = face_img.resize((224, 224))
+            x = keras_image.img_to_array(face_img)
+            x = np.expand_dims(x, axis=0)
+            x /= 255.0
+            y_pred = model.predict(x)
+            confidence_score = y_pred[0][0]
+            label = "Fake" if confidence_score >= threshold else "Real"
+            predictions.append(label)
+            confidences.append(confidence_score)
+            if detect_glitch(frame1, frame2, glitch_threshold):
+                glitch_count += 1
+
+    if not face_detected:
+        return "No Face Detected", 0.0
+
+    avg_confidence = np.mean(confidences)
+    avg_prediction = max(set(predictions), key=predictions.count)
+
+    if avg_prediction == "Fake" or glitch_count > glitch_count_threshold:
+        return "Fake", avg_confidence
+    else:
+        return "Real", avg_confidence
 
 def clear_uploaded_files():
     try:
@@ -170,10 +179,11 @@ def scan_now():
         file_path = session.get('uploaded_file_path')
         file_type = session.get('file_type')
         filename = session.get('filename')
+        frames_to_analyze = request.form.get('frames_to_analyze', 100, type=int)  # Retrieve the frames_to_analyze value from the form
         if file_path and file_type:
             print(f"Scanning file: {file_path} of type: {file_type}")
             if file_type == 'video':
-                label, confidence = predict_video(file_path)
+                label, confidence = predict_video(file_path, image_model, optimal_threshold, glitch_threshold, glitch_count_threshold, frames_to_analyze)
             elif file_type == 'image':
                 label, confidence = predict_image(file_path)
             else:
@@ -209,7 +219,8 @@ def upload_model():
             if model_file:
                 model_path = os.path.join(app.config['UPLOAD_FOLDER'], model_file.filename)
                 model_file.save(model_path)
-                load_models()  # Reload all models to update
+                global image_model
+                image_model = load_model(model_path)  # Reload the model
                 flash('Model loaded successfully')
                 print(f"Model {model_file.filename} uploaded and loaded from {model_path}")
         return redirect(url_for('scan'))
