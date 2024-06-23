@@ -1,79 +1,141 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('../images/2.png') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.message {
+    font-size: 18px;
+    color: #333;
+    margin-top: 10px;
+}
+
+.progress-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+}
+
+.progress-bar {
+    width: 100%;
+    background-color: #f3f3f3;
+    border-radius: 5px;
+    overflow: hidden;
+    margin-top: 10px;
+}
+
+.progress-bar-inner {
+    height: 24px;
+    width: 0%;
+    background-color: #4caf50;
+    text-align: center;
+    line-height: 24px;
+    color: white;
+    border-radius: 5px;
+}
+
+.popup {
+    visibility: hidden;
+    width: 300px;
+    background-color: #f9f9f9;
+    color: #333;
+    text-align: center;
+    border-radius: 10px;
+    padding: 20px;
+    position: fixed;
+    z-index: 1000;
+    left: 50%;
+    top: 20px;
+    transform: translateX(-50%);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: visibility 5s, opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.popup.show {
+    visibility: visible;
+    opacity: 1;
+}
+
 .container {
     text-align: center;
-    flex: 1; /* Allow container to grow and fill space between header and footer */
+    flex: 1;
 }
 
 .container button, .container label {
     border: none;
     color: white;
-    padding: 30px 64px; /* Padding adjusted to the previous style */
+    padding: 30px 64px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 32px; /* Font size adjusted to the previous style */
-    margin: 8px 4px; /* Margin adjusted to the previous style */
+    font-size: 32px;
+    margin: 8px 4px;
     cursor: pointer;
     border-radius: 25px;
     font-family: Impact, sans-serif;
-    transition: transform 0.2s; /* Smooth transition for hover effect */
+    transition: transform 0.2s;
     color: #000;
 }
 
 .container button:hover, .container label:hover {
-    transform: scale(1.05); /* Slightly increase size on hover */
+    transform: scale(1.05);
 }
 
 .button-load-media {
-    background-color: #71faff; /* Light blue */
-    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
-    height: 100px; /* Adjusted to the previous style */
+    background-color: #71faff;
+    width: calc(250px * 2 + 120px);
+    height: 100px;
 }
 
 .button-load-model {
-    background-color: #ff8b7f; /* Light orange (color of button 2) */
-    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
-    height: 100px; /* Adjusted to the previous style */
+    background-color: #ff8b7f;
+    width: calc(250px * 2 + 120px);
+    height: 100px;
 }
 
 .button-scan-now {
-    background-color: #f28482; /* Red-orange (color of button 3) */
-    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
-    height: 100px; /* Adjusted to the previous style */
+    background-color: #f28482;
+    width: calc(250px * 2 + 120px);
+    height: 100px;
 }
 
 .step {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px; /* Margin adjusted to the previous style */
-    position: relative; /* Ensure the step is the positioning context for the icon */
+    margin-bottom: 20px;
+    position: relative;
 }
 
 .click-icon {
     position: absolute;
     bottom: -20px;
     right: 0;
-    font-size: 48px; /* Double the icon size */
+    font-size: 48px;
     cursor: pointer;
 }
 
 .large-button {
-    width: 300px; /* Adjusted to the previous style */
-    height: 100px; /* Adjusted to the previous style */
+    width: 300px;
+    height: 100px;
 }
 
 .full-width-button {
-    width: calc(250px * 2 + 120px); /* Same width as LOAD IMAGE and LOAD VIDEO combined with margin */
-    height: 100px; /* Adjusted to the previous style */
+    width: calc(250px * 2 + 120px);
+    height: 100px;
 }
 
-/* Colors */
 :root {
     --primary: #d43a2f;
     --secondary: #000000;
 }
 
-/* Layout */
 header, footer {
     background: var(--primary);
     color: #FAEBDC;
@@ -82,34 +144,33 @@ header, footer {
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all .5s ease-in-out; /* Ensure smooth transition */
+    transition: all .5s ease-in-out;
     border-radius: 30px;
     font-family: impact;
-    letter-spacing: 6px; /* Adjust this value to increase or decrease the spacing between letters */
+    letter-spacing: 6px;
     width: 100%;
-    position: fixed; /* Fixed positioning */
-    z-index: 10; /* Ensure they are on top of other elements */
+    position: fixed;
+    z-index: 10;
 }
 
 header {
-    top: 0; /* Position header at the top */
+    top: 5px;
 }
 
 footer {
-    bottom: 0; /* Position footer at the bottom */
+    bottom: 5px;;
 }
 
-/* Hover effects for header and footer */
 header:hover, footer:hover {
     background-image: linear-gradient(90deg, var(--secondary), var(--primary));
 }
 
 header:hover h1 {
-    transform: translateX(-500px); /* Increased movement for demonstration */
+    transform: translateX(-500px);
 }
 
 footer:hover p {
-    transform: translateX(600px); /* Increased movement for demonstration */
+    transform: translateX(600px);
 }
 
 header h1, footer p {
@@ -117,7 +178,6 @@ header h1, footer p {
     transition: transform .4s ease-in-out;
 }
 
-/* Navigation items in header */
 header nav {
     display: flex;
     opacity: 0;
@@ -130,7 +190,7 @@ header nav {
 
 header:hover nav {
     opacity: 1;
-    transform: translateX(0); /* Bring into view */
+    transform: translateX(0);
 }
 
 .nav-item {
@@ -141,14 +201,12 @@ header:hover nav {
     font-weight: 600;
 }
 
-/* Shake Animation Keyframes */
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
     10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
     20%, 40%, 60%, 80% { transform: translateX(10px); }
 }
 
-/* Apply Shake Animation on Hover */
 .nav-item:hover {
     animation: shake 0.8s ease-in-out;
 }
@@ -159,7 +217,6 @@ main {
     padding: 2rem;
 }
 
-/* Hero Section */
 .hero {
     padding: 60px 20px;
     text-align: center;
@@ -169,37 +226,35 @@ main {
     margin-bottom: 60px;
 }
 
-/* Global box-sizing */
 * {
     box-sizing: border-box;
 }
 
 .button-load-media, .button-load-model {
-    background-color: #71faff; /* blue */
-    width: calc(250px * 2 + 120px); /* Same width as LOAD MODEL */
-    height: 100px; /* Adjusted to the previous style */
+    background-color: #71faff;
+    width: calc(250px * 2 + 120px);
+    height: 100px;
 }
 
 .button-load-model {
-    background-color: #ffc7a4; /* Beige */
+    background-color: #ffc7a4;
 }
 
 .input-container {
     margin-top: 10px;
     text-align: left;
     width: calc(250px * 2 + 120px);
-  }
+}
   
-  .input-container label {
+.input-container label {
     font-size: 30px;
     font-weight: bold;
-  }
+}
   
-  .input-container input {
+.input-container input {
     width: 100%;
     padding: 10px;
     font-size: 16px;
-    border-radius: 5px;
+    border-radius: 15px;
     border: 1px solid #ccc;
-  }
-  
+}

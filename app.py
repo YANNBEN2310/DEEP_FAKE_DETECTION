@@ -218,13 +218,16 @@ def upload_model():
             if model_file.filename == '':
                 flash('No selected model file')
                 return redirect(url_for('scan'))
-            if model_file:
+            if model_file and model_file.filename.lower().endswith('.h5'):
                 model_path = os.path.join(app.config['MODEL_FOLDER'], model_file.filename)
                 model_file.save(model_path)
                 global image_model
                 image_model = load_model(model_path)  # Reload the model
-                flash('Model loaded successfully')
+                flash(f'Model {model_file.filename} loaded successfully')
                 print(f"Model {model_file.filename} uploaded and loaded from {model_path}")
+            else:
+                flash('Unsupported file type, please upload a .h5 model file')
+                return redirect(url_for('scan'))
         return redirect(url_for('scan'))
     except Exception as e:
         print(f"Error in upload_model: {e}")

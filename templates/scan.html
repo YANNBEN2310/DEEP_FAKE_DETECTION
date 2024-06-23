@@ -6,44 +6,6 @@
   <link rel="icon" href="{{ url_for('static', filename='images/app.ico') }}" type="image/x-icon">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/scan.css') }}">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: url('{{ url_for('static', filename='images/2.png') }}') no-repeat center center fixed;
-      background-size: cover;
-      margin: 0;
-      font-family: Arial, sans-serif;
-    }
-    .message {
-      font-size: 18px;
-      color: #333;
-      margin-top: 10px;
-    }
-    .progress-container {
-      width: 100%;
-      max-width: 600px;
-      margin: 20px auto;
-    }
-    .progress-bar {
-      width: 100%;
-      background-color: #f3f3f3;
-      border-radius: 5px;
-      overflow: hidden;
-      margin-top: 10px;
-    }
-    .progress-bar-inner {
-      height: 24px;
-      width: 0%;
-      background-color: #4caf50;
-      text-align: center;
-      line-height: 24px;
-      color: white;
-      border-radius: 5px;
-    }
-  </style>
 </head>
 <body>
   <header class="ribbon-hover">
@@ -59,18 +21,17 @@
     <div class="container">
       <div class="step">
         <form id="upload-form" action="{{ url_for('upload_file') }}" method="POST" enctype="multipart/form-data">
-          <input type="file" name="file" id="load-media" accept="image/*,video/*" class="large-button" style="display: none;">
+          <input type="file" name="file" id="load-media" accept="image/*,video/*" class="large-button" style="display: none;" onchange="submitForm(event, 'upload-form', 'Media uploaded successfully!', 'media-popup')">
           <label for="load-media" class="button-load-media large-button">LOAD MEDIA</label>
-          <input type="hidden" name="file_type" id="file-type">
         </form>
       </div>
-      <div id="file-message" class="message"></div>
       <div class="step">
         <form id="model-form" action="{{ url_for('upload_model') }}" method="POST" enctype="multipart/form-data">
-          <input type="file" name="model" id="load-model" class="large-button" style="display: none;" onchange="this.form.submit();">
+          <input type="file" name="model" id="load-model" accept=".h5" class="large-button" style="display: none;" onchange="this.form.submit(); showPopup('Model uploaded successfully!', 'model-popup')">
           <label for="load-model" class="button-load-model large-button full-width-button">LOAD MODEL</label>
         </form>
       </div>
+
       <div class="step">
         <form id="scan-form" action="{{ url_for('scan_now') }}" method="POST">
           <button type="submit" class="button-scan-now large-button full-width-button" onclick="startProgressBar()">SCAN NOW</button>
@@ -92,5 +53,31 @@
     <p>&copy; Reality Radar 2024</p>
   </footer>
   <script src="{{ url_for('static', filename='js/file_handler.js') }}"></script>
+  <div id="media-popup" class="popup"></div>
+  <div id="model-popup" class="popup"></div>
+  <script>
+    function showPopup(message, popupId) {
+      const popup = document.getElementById(popupId);
+      popup.textContent = message;
+      popup.style.visibility = 'visible';
+      popup.style.opacity = '1';
+      setTimeout(() => {
+        popup.style.visibility = 'hidden';
+        popup.style.opacity = '0';
+      }, 5000);
+    }
+
+    function submitForm(event, formId, message, popupId) {
+      event.preventDefault(); // prevent the form from submitting normally
+      const form = document.getElementById(formId);
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+      }).then(() => {
+        showPopup(message, popupId);
+      });
+    }
+  </script>
 </body>
-</html>
+</html

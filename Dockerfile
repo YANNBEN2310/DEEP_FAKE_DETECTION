@@ -7,6 +7,9 @@ WORKDIR /app
 # Copy the current directory contents into the container at /app
 COPY . /app
 
+# Set environment variable to ensure Python output is not buffered
+ENV PYTHONUNBUFFERED=1
+
 # Install the required system packages and Python dependencies
 RUN apt-get update && \
     apt-get install -y libgl1-mesa-glx libglib2.0-0 && \
