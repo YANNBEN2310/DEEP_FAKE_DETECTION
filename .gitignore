@@ -11,4 +11,4 @@ deepfake_detection_model.h5
 balanced_dataset/
 yann_env/
 models_old/
-images/
+#images/
