@@ -43,14 +43,3 @@ sympy==1.12.1
 tensorboard==2.16.2
 tensorboard-data-server==0.7.2
 tensorflow==2.5.0
-tensorflow-intel==2.16.1
-termcolor==2.4.0
-torch==1.9.0
-torchvision==0.17.2
-tqdm==4.66.4
-typing_extensions==4.12.2
-urllib3==2.2.2
-Werkzeug==3.0.3
-wheel==0.43.0
-wrapt==1.16.0
-opencv-python-headless==4.5.3.56
