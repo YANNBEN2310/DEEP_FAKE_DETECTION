@@ -1,3 +1,4 @@
+
 # Reality Radar - Deepfake Detection
 
 **Description:**
@@ -59,6 +60,10 @@ To combat fake news, the IA School entrusted us with this academic project to de
 
 4. **Access the Application:**
    Open your web browser and navigate to `http://localhost:5000`
+
+### Pretrained Model
+
+- **Download Pretrained Model (.h5):** [Pretrained Model](https://drive.google.com/file/d/1SQrQZTjz419Ejp7qJiREV4g3UYKSk9T7/view)
 
 ### Additional Information
 
