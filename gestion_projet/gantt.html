@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GESTION DE PROJET</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="header">
+        <h1>GESTION DE PROJET IA DEEPFAKE</h1>
+        <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    </div>
+    <div class="content">
+        <div class="team-container">
+            <h2 class="team-title">Membres de l'équipe</h2>
+            <div class="team-member" onclick="window.location.href='https://www.linkedin.com/in/marianne-mazaud-a8433480/'">
+                <img src="https://media.licdn.com/dms/image/D5603AQEuwCr2TAxnPg/profile-displayphoto-shrink_400_400/0/1707500511382?e=1723680000&v=beta&t=19TYwNxy67-eKqqR1-TCLjejSEvPVVqujc047pi3et4" alt="Marianne">
+                <div class="team-member-info">
+                    <i class="fas fa-database"></i>
+                    <p>Marianne (PO Data Analyste)</p>
+                </div>
+            </div>
+            <div class="team-member" onclick="window.location.href='https://www.linkedin.com/in/yann-b-19a77812b'">
+                <img src="https://media.licdn.com/dms/image/D4E03AQHC0ScWl6AWmA/profile-displayphoto-shrink_800_800/0/1712619392686?e=1723680000&v=beta&t=6ccVaFTfPK9wNZClRueb-kyWfQeyuoyHIESGw0dmMNg" alt="Yann">
+                <div class="team-member-info">
+                    <i class="fas fa-code"></i>
+                    <p>Yann (DevMLOPS)</p>
+                </div>
+            </div>
+            <div class="header-buttons">
+                <button id="github-link" onclick="window.location.href='https://github.com/YANNBEN2310/DEEP_FAKE_DETECTION'">GitHub Link</button>
+                <button id="app-website" onclick="window.location.href='https://reality-radar-deepfake-07813313804c.herokuapp.com'">App Website</button>
+            </div>
+        </div>
+        <div class="description-container">
+            <h2 class="description-title">Description du projet</h2>
+            <p>Dans le but de combattre les fakes news, l'IA School nous a confié de mener ce projet académique afin de détecter les fausses vidéos et images qui pullulent sur internet et les réseaux sociaux. Notre solution sera de produire un modèle de deep learning capable de les détecter. Notre produit sera une application web mobile et une extension sur les navigateurs.</p>
+        </div>
+        <div class="tech-container">
+            <h2 class="tech-title">Tech Environnement</h2>
+            <div class="tech-item">
+                <i class="fas fa-laptop"></i>
+                <p>Ordinateurs: 13th Gen Intel(R) Core(TM) i9-13900HX 2.20 GHz, 16.0 GB (15.7 GB usable), 64-bit operating system, x64-based processor, Nvidia GEFORCE RTX 4070 Ti</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-code"></i>
+                <p>Langages: python 3.12.3, js, html, css, yml</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-cubes"></i>
+                <p>Bibliothèques principales: Torch, Tensorflow, Keras, Numpy, Plotly, MTCNN, VGG16, ResNet, opencv</p>
+            </div>
+            <div class="tech-item">
+                <i class="fas fa-tools"></i>
+                <p>Outils: Docker, Vscode, Pycharm, Anaconda, Heroku</p>
+            </div>
+        </div>
+        <div class="wbs-container">
+            <h2 class="wbs-title">Work Breakdown Structure</h2>
+            <div class="wbs">
+                <div class="wbs-phase">
+                    <h3 class="wbs-phase-title">1. Réflexion</h3>
+                    <div class="wbs-phase-content">
+                        <p class="wbs-manager">Managers</p>
+                        <p class="wbs-task">A. Choix problématique</p>
+                        <p class="wbs-task">B. Choix dataset</p>
+                    </div>
+                </div>
+                <div class="wbs-phase">
+                    <h3 class="wbs-phase-title">2. Préparation</h3>
+                    <div class="wbs-phase-content">
+                        <p class="wbs-manager">Ingénieurs</p>
+                        <p class="wbs-task">C. Nettoyage données</p>
+                        <p class="wbs-task">D. Equilibrage</p>
+                        <p class="wbs-task">E. Pré-traitements des images</p>
+                    </div>
+                </div>
+                <div class="wbs-phase">
+                    <h3 class="wbs-phase-title">3. Modélisation - Optimisation</h3>
+                    <div class="wbs-phase-content">
+                        <p class="wbs-manager">Ingénieurs</p>
+                        <p class="wbs-task">F. Modèle CNN</p>
+                        <p class="wbs-task">G. Fine Tuning</p>
+                        <p class="wbs-task">H. Grid Search et Transfert Learning</p>
+                    </div>
+                </div>
+                <div class="wbs-phase">
+                    <h3 class="wbs-phase-title">4. Évaluation</h3>
+                    <div class="wbs-phase-content">
+                        <p class="wbs-manager">Managers/Ingénieurs</p>
+                        <p class="wbs-task">I. Recherche de données</p>
+                        <p class="wbs-task">J. Test et Production</p>
+                        <p class="wbs-task">K. Conception de l'application</p>
+                        <p class="wbs-task">L. Déploiement</p>
+                    </div>
+                </div>
+            </div>
+            <p class="wbs-note">Le découpage WBS structuré en termes de ressources, 2 ingénieurs/managers allouées au projet ainsi que leur matériel respectif, décrit dans le tableau ci-dessus.</p>
+        </div>
+        <div class="ordonnancement-container">
+            <h2 class="ordonnancement-title">Ordonnancement</h2>
+            <table class="ordonnancement-table">
+                <thead>
+                    <tr>
+                        <th>Task</th>
+                        <th>Durée</th>
+                        <th>Prédécesseur</th>
+                        <th>Niveau</th>
+                        <th>Ressources</th>
+                    </tr>
+                </thead>
+                <tbody contenteditable="true">
+                    <tr><td>A</td><td>15</td><td>-</td><td>0</td><td>2 ingés</td></tr>
+                    <tr><td>B</td><td>15</td><td>-</td><td>1</td><td>2 ingés</td></tr>
+                    <tr><td>C</td><td>30</td><td>A,B</td><td>2</td><td>2 ingés</td></tr>
+                    <tr><td>D</td><td>30</td><td>C</td><td>3</td><td>2 ingés</td></tr>
+                    <tr><td>E</td><td>15</td><td>D</td><td>4</td><td>2 ingés</td></tr>
+                    <tr><td>F</td><td>21</td><td>E</td><td>5</td><td>2 ingés</td></tr>
+                    <tr><td>G</td><td>20</td><td>F</td><td>6</td><td>2 ingés</td></tr>
+                    <tr><td>H</td><td>15</td><td>G</td><td>7</td><td>2 ingés</td></tr>
+                    <tr><td>I</td><td>1</td><td>G</td><td>8</td><td>2 ingés</td></tr>
+                    <tr><td>J</td><td>2</td><td>H</td><td>9</td><td>2 ingés</td></tr>
+                    <tr><td>K</td><td>15</td><td>I</td><td>10</td><td>2 ingés</td></tr>
+                    <tr><td>L</td><td>1</td><td>J</td><td>11</td><td>2 ingés</td></tr>
+                </tbody>
+            </table>
+            <button onclick="saveTable()">Save</button>
+        </div>
+        <div class="mpm-container">
+            <h2 class="mpm-title">Méthode des Potentiels Métra</h2>
+            <div class="mpm-diagram">
+                <img src="mpmchart.svg" alt="MPM Diagram">
+            </div>
+            <p>Ce diagramme permet de visualiser les tâches, leur succession, les marges libres et totales, la durée du projet (180 jours, soit 6 mois), et le chemin critique. Il indique également les dates à respecter pour éviter de perturber les échéances.</p>
+        </div>
+        <div class="gantt-container">
+            <h2 class="gantt-title">Diagramme de Gantt</h2>
+            <div class="gantt-chart">
+                <div class="gantt-header">
+                    <div class="gantt-header-item">Janvier</div>
+                    <div class="gantt-header-item">Février</div>
+                    <div class="gantt-header-item">Mars</div>
+                    <div class="gantt-header-item">Avril</div>
+                    <div class="gantt-header-item">Mai</div>
+                    <div class="gantt-header-item">Juin</div>
+                </div>
+                <div class="gantt-body">
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 1 / span 1;">Définition des objectifs</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 2 / span 1;">Collecte et préparation des données</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 3 / span 1;">Développement initial des modèles</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 4 / span 1;">Évaluation et optimisation des modèles</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 5 / span 1;">Développement de l'interface utilisateur</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 5 / span 2;">Tests et validation</div>
+                    </div>
+                    <div class="gantt-row">
+                        <div class="gantt-task" style="grid-column: 6 / span 1;">Déploiement et maintenance</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="results-container">
+            <h2 class="results-title">Résultats</h2>
+           <div class="result-item" title="Click me" onclick="window.location.href='https://drive.google.com/file/d/1SQrQZTjz419Ejp7qJiREV4g3UYKSk9T7/view?usp=drive_link'">
+				<i class="fas fa-robot"></i>
+				<p>Model keras : IMAGE_VIDEO_DEEP_FAKE-MODEL-2_3.h5</p>
+			</div>
+
+            <div class="result-item">
+                <i class="fas fa-globe"></i>
+                <p>Application web : Reality Radar</p>
+            </div>
+            <div class="result-item">
+                <i class="fas fa-images"></i>
+                <p>Photos:</p>
+                <div class="photos-container">
+                    <div class="photo-placeholder"><img src="images/main.png" alt="Photo 1" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/scan.png" alt="Photo 2" onclick="openModal(this)"></div>
+                </div>
+            </div>
+            <div class="result-item">
+                <i class="fas fa-chart-line"></i>
+                <p>Metrics du modèle:</p>
+                <div class="photos-container">
+                    <div class="photo-placeholder"><img src="images/courbeacc.png" alt="Photo 1" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/cm.png" alt="Photo 2" onclick="openModal(this)"></div>
+                </div>
+            </div>
+            <div class="result-item">
+                <i class="fas fa-desktop"></i>
+                <p>Interface Application:</p>
+                <div class="photos-container">
+                    <div class="photo-placeholder"><img src="images/f1.png" alt="Interface Photo 1" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/f2.png" alt="Interface Photo 2" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/f3.png" alt="Interface Photo 3" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/f4.png" alt="Interface Photo 4" onclick="openModal(this)"></div>
+                    <div class="photo-placeholder"><img src="images/f5.png" alt="Interface Photo 5" onclick="openModal(this)"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>Yann Marianne &copy; 2024</p>
+    </div>
+    <div id="modal" class="modal" onclick="closeModal()">
+        <span class="close">&times;</span>
+        <img class="modal-content" id="modal-img">
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
