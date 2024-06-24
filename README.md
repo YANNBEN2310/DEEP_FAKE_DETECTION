@@ -76,7 +76,7 @@ To combat fake news, the IA School entrusted us with this academic project to de
 ### Iterations and Project Management
 
 - **Iterations and Notebooks:** To view the different iterations and their corresponding notebooks, navigate to the `notebooks` folder in this repository.
-- **Project Management Steps:** Detailed steps and progress updates for project management can be found in the `gestion_projet.md` file.
+- **Project Management Steps:** Detailed steps and progress updates for project management can be found in the `gestion_projet.md` file. [View Website](https://ssymm-forest-fire-29777b5a1737.herokuapp.com/)
 
 ### Additional Information
 
