@@ -65,6 +65,14 @@ To combat fake news, the IA School entrusted us with this academic project to de
 
 - **Download Pretrained Model (.h5):** [Pretrained Model](https://drive.google.com/file/d/1SQrQZTjz419Ejp7qJiREV4g3UYKSk9T7/view)
 
+### Datasets Sources
+
+- **Kaggle Deepfake Detection Challenge Dataset:**
+  [Kaggle Deepfake Detection Challenge](https://www.kaggle.com/c/deepfake-detection-challenge)
+
+- **DFDC (Deepfake Detection Challenge) Dataset:**
+  [DFDC Dataset](https://www.kaggle.com/datasets/aleksandrpikul222/dfdcdfdc)
+
 ### Iterations and Project Management
 
 - **Iterations and Notebooks:** To view the different iterations and their corresponding notebooks, navigate to the `notebooks` folder in this repository.
