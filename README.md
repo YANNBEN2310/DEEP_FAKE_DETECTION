@@ -65,6 +65,11 @@ To combat fake news, the IA School entrusted us with this academic project to de
 
 - **Download Pretrained Model (.h5):** [Pretrained Model](https://drive.google.com/file/d/1SQrQZTjz419Ejp7qJiREV4g3UYKSk9T7/view)
 
+### Iterations and Project Management
+
+- **Iterations and Notebooks:** To view the different iterations and their corresponding notebooks, navigate to the `notebooks` folder in this repository.
+- **Project Management Steps:** Detailed steps and progress updates for project management can be found in the `gestion_projet.md` file.
+
 ### Additional Information
 
 - **Uploading Models:** When uploading a model, ensure the model file has a `.h5` extension.
